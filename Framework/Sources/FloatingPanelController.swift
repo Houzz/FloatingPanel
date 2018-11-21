@@ -14,6 +14,8 @@ public protocol FloatingPanelControllerDelegate: class {
 
     func floatingPanelDidChangePosition(_ vc: FloatingPanelController) // changed the settled position in the model layer
 
+    func floatingPanel(_ vc: FloatingPanelController, shouldMoveBy: UIPanGestureRecognizer) -> Bool
+
     func floatingPanelDidMove(_ vc: FloatingPanelController) // any offset changes
 
     // called on start of dragging (may require some time and or distance to move)
@@ -37,6 +39,7 @@ public extension FloatingPanelControllerDelegate {
         return nil
     }
     func floatingPanelDidChangePosition(_ vc: FloatingPanelController) {}
+    func floatingPanel(_ vc: FloatingPanelController, shouldMoveBy: UIPanGestureRecognizer) -> Bool { return true }
     func floatingPanelDidMove(_ vc: FloatingPanelController) {}
     func floatingPanelWillBeginDragging(_ vc: FloatingPanelController) {}
     func floatingPanelDidEndDragging(_ vc: FloatingPanelController, withVelocity velocity: CGPoint, targetPosition: FloatingPanelPosition) {}

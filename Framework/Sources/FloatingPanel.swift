@@ -295,6 +295,10 @@ class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewDelegate
 
             log.debug(panGesture.state, ">>>", "translation: \(translation.y), velocity: \(velocity.y)")
 
+            if viewcontroller.delegate?.floatingPanel(viewcontroller, shouldMoveBy: panGesture) == false {
+                return
+            }
+
             if shouldScrollViewHandleTouch(scrollView, point: location, velocity: velocity) {
                 return
             }
