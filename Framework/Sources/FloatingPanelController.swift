@@ -225,7 +225,7 @@ public class FloatingPanelController: UIViewController, UIScrollViewDelegate, UI
     ///     - animated: Pass true to animate the presentation; otherwise, pass false.
     public func addPanel(toParent parent: UIViewController, inView: UIView? = nil, animated: Bool = false) {
         guard self.parent == nil else {
-            log.warning("Already added to a parent(\(parent))")
+            LogWarning("Already added to a parent(\(parent))")
             return
         }
         precondition((parent is UINavigationController) == false, "UINavigationController displays only one child view controller at a time.")

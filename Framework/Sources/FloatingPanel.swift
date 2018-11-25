@@ -260,14 +260,14 @@ class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewDelegate
     // MARK: - Gesture handling
     private let offsetThreshold: CGFloat = 5.0 // Optimal value from testing
     @objc func handle(panGesture: UIPanGestureRecognizer) {
-        log.debug("Gesture >>>>", panGesture)
+        LogExtraVerbose("Gesture >>>> \(panGesture)")
         let velocity = panGesture.velocity(in: panGesture.view)
 
         switch panGesture {
         case scrollView?.panGestureRecognizer:
             guard let scrollView = scrollView else { return }
 
-            log.debug("SrollPanGesture ScrollView.contentOffset >>>", scrollView.contentOffset.y, scrollView.contentSize, scrollView.bounds.size)
+            LogExtraVerbose("SrollPanGesture ScrollView.contentOffset >>> \(scrollView.contentOffset.y), \(scrollView.contentSize), \(scrollView.bounds.size)")
 
             // Prevent scoll slip by the top bounce when the scroll view's height is
             // less than the content's height
@@ -305,7 +305,7 @@ class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewDelegate
             let translation = panGesture.translation(in: panGesture.view!.superview)
             let location = panGesture.location(in: panGesture.view)
 
-            log.debug(panGesture.state, ">>>", "translation: \(translation.y), velocity: \(velocity.y)")
+            LogExtraVerbose("\(panGesture.state) >>> translation: \(translation.y), velocity: \(velocity.y)")
 
             if shouldScrollViewHandleTouch(scrollView, point: location, velocity: velocity) {
                 return
@@ -357,7 +357,7 @@ class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewDelegate
             return false
         }
 
-        log.debug("ScrollView.contentOffset >>>", scrollView.contentOffset.y)
+        LogExtraVerbose("ScrollView.contentOffset >>> \(scrollView.contentOffset.y)")
 
         let offset = scrollView.contentOffset.y - scrollView.contentOffsetZero.y
         if  abs(offset) > offsetThreshold {
@@ -377,11 +377,11 @@ class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewDelegate
         // A user interaction does not always start from Began state of the pan gesture
         // because it can be recognized in scrolling a content in a content view controller.
         // So do nothing here.
-        log.debug("panningBegan")
+        LogExtraVerbose("panningBegan")
     }
 
     private func panningChange(with translation: CGPoint) {
-        log.debug("panningChange")
+        LogExtraVerbose("panningChange")
 
         let currentY = getCurrentY(from: initialFrame, with: translation)
 
@@ -394,7 +394,7 @@ class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewDelegate
     }
 
     private func panningEnd(with translation: CGPoint, velocity: CGPoint) {
-        log.debug("panningEnd")
+        LogExtraVerbose("panningEnd")
         if interactionInProgress == false {
             initialFrame = surfaceView.frame
         }
@@ -446,7 +446,7 @@ class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewDelegate
 
     private func startInteraction(with translation: CGPoint) {
         /* Don't lock a scroll view to show a scroll indicator after hitting the top */
-        log.debug("startInteraction")
+        LogExtraVerbose("startInteraction")
         initialFrame = surfaceView.frame
         if let scrollView = scrollView {
             initialScrollOffset = scrollView.contentOffset
@@ -459,7 +459,7 @@ class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewDelegate
     }
 
     private func endInteraction(for targetPosition: FloatingPanelPosition) {
-        log.debug("endInteraction for \(targetPosition)")
+        LogExtraVerbose("endInteraction for \(targetPosition)")
         interactionInProgress = false
 
         // Prevent to keep a scoll view indicator visible at the half/tip position
@@ -515,7 +515,7 @@ class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewDelegate
     }
 
     private func finishAnimation(at targetPosition: FloatingPanelPosition) {
-        log.debug("finishAnimation \(targetPosition)")
+        LogExtraVerbose("finishAnimation \(targetPosition)")
         self.animator = nil
         self.viewcontroller.delegate?.floatingPanelDidEndDecelerating(self.viewcontroller)
 
