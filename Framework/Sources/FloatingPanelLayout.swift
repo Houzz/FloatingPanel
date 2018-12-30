@@ -290,7 +290,7 @@ class FloatingPanelLayoutAdapter {
             }
         }
         
-        let height = (self.parent?.view.bounds.height ?? UIScreen.main.bounds.height) - (safeAreaInsets.top + (fullInset ?? self.fullInset))
+        let height = (self.parent?.view.bounds.height ?? UIScreen.main.bounds.height) - (safeAreaInsets.top + (fullInset ?? self.fullInset)) + layout.topInteractionBuffer
 
         if let consts = self.heightConstraints {
             // dont know if internally guards against same value update
@@ -304,7 +304,7 @@ class FloatingPanelLayoutAdapter {
             
             NSLayoutConstraint.activate([consts])
             heightConstraints = consts
-            surfaceView.set(bottomOverflow: heightBuffer)
+            surfaceView.set(bottomOverflow: heightBuffer + layout.topInteractionBuffer)
         }
     }
     
