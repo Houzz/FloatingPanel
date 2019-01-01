@@ -257,6 +257,10 @@ class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewDelegate
         //        }
     }
 
+    func resetContentOffset() {
+        initialScrollOffset = .zero
+    }
+    
     // MARK: - Gesture handling
     private let offsetThreshold: CGFloat = 5.0 // Optimal value from testing
     @objc func handle(panGesture: UIPanGestureRecognizer) {

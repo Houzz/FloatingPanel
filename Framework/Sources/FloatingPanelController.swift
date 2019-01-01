@@ -305,6 +305,10 @@ public class FloatingPanelController: UIViewController, UIScrollViewDelegate, UI
     public func move(to: FloatingPanelPosition, animated: Bool, completion: (() -> Void)? = nil) {
         floatingPanel.move(to: to, animated: animated, completion: completion)
     }
+    
+    public func resetContentOffset() {
+        floatingPanel.resetContentOffset()
+    }
 
     /// Sets the view controller responsible for the content portion of the floating panel..
     public func set(contentViewController: UIViewController?) {

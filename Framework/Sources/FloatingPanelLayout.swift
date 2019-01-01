@@ -128,6 +128,7 @@ class FloatingPanelLayoutAdapter {
         return (surfaceView.superview!.bounds.height - topY) < (layout.containedHeight ?? 0.0) + bottomY
     }
     
+    // TODO: refactor with simplified operations.
     private var fullInset: CGFloat {
         guard let layoutInset = layout.insetFor(position: .full) else {
             if let previousFullInset = _previousFullInset, previousFullInset != 0 {
@@ -146,7 +147,7 @@ class FloatingPanelLayoutAdapter {
         }
         
         // check if we need to update based on changed inset values
-        let currentFullInset = isHigherThanTopPadding ? layoutInset : (additionalInset + layoutInset)
+        let currentFullInset = (isHigherThanTopPadding ? layoutInset : (additionalInset + layoutInset)) + safeAreaInsets.bottom + 8
         
         let shouldUpdate = (_previousFullInset == nil) || (_previousFullInset! != currentFullInset)
         _previousFullInset = currentFullInset
@@ -156,7 +157,7 @@ class FloatingPanelLayoutAdapter {
         }
         
         if let containedHeight = layout.containedHeight {
-            updateHeight(with: isHigherThanTopPadding ? layoutInset : UIScreen.main.bounds.height - (safeAreaInsets.top + containedHeight + safeAreaInsets.bottom))
+            updateHeight(with: isHigherThanTopPadding ? layoutInset : UIScreen.main.bounds.height - (safeAreaInsets.top + containedHeight + safeAreaInsets.bottom + 8))
         }
         
         return currentFullInset
@@ -290,7 +291,7 @@ class FloatingPanelLayoutAdapter {
             }
         }
         
-        let height = (self.parent?.view.bounds.height ?? UIScreen.main.bounds.height) - (safeAreaInsets.top + (fullInset ?? self.fullInset)) + layout.topInteractionBuffer
+        let height = (self.parent?.view.bounds.height ?? UIScreen.main.bounds.height) - (safeAreaInsets.top + (fullInset ?? self.fullInset))
 
         if let consts = self.heightConstraints {
             // dont know if internally guards against same value update

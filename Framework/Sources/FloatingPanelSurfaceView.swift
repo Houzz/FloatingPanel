@@ -20,6 +20,7 @@ public class FloatingPanelSurfaceView: UIView {
 
     /// A UIView object that can have the surface view added to it.
     public var contentView: UIView!
+    public var contentViewContainer: UIView!
 
     private var color: UIColor? = .white { didSet { setNeedsLayout() } }
     private var bottomOverflow: CGFloat = 0.0 // Must not call setNeedsLayout()
@@ -80,16 +81,29 @@ public class FloatingPanelSurfaceView: UIView {
         layer.insertSublayer(backgroundLayer, at: 0)
         self.backgroundLayer = backgroundLayer
 
+        let contentViewContainer = UIView()
+        addSubview(contentViewContainer)
+        self.contentViewContainer = contentViewContainer
+
         let contentView = FloatingPanelSurfaceContentView()
-        addSubview(contentView)
+        contentView.clipsToBounds = false
+        contentViewContainer.addSubview(contentView)
+        contentViewContainer.clipsToBounds = true
         self.contentView = contentView as UIView
-        contentView.backgroundColor = color
+        
+        contentViewContainer.backgroundColor = color
         contentView.translatesAutoresizingMaskIntoConstraints = false
+        contentViewContainer.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            contentView.topAnchor.constraint(equalTo: topAnchor, constant: 0.0),
-            contentView.leftAnchor.constraint(equalTo: leftAnchor, constant: 0.0),
-            contentView.rightAnchor.constraint(equalTo: rightAnchor, constant: 0.0),
-            contentView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0.0),
+            contentViewContainer.topAnchor.constraint(equalTo: topAnchor, constant: 0.0),
+            contentViewContainer.leftAnchor.constraint(equalTo: leftAnchor, constant: 0.0),
+            contentViewContainer.rightAnchor.constraint(equalTo: rightAnchor, constant: 0.0),
+            contentViewContainer.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 60.0),
+            
+            contentView.topAnchor.constraint(equalTo: contentViewContainer.topAnchor, constant: 0.0),
+            contentView.leftAnchor.constraint(equalTo: contentViewContainer.leftAnchor, constant: 0.0),
+            contentView.rightAnchor.constraint(equalTo: contentViewContainer.rightAnchor, constant: 0.0),
+            contentView.bottomAnchor.constraint(equalTo: contentViewContainer.bottomAnchor, constant: -60.0)
             ])
 
         let grabberHandle = GrabberHandleView()
@@ -139,9 +153,9 @@ public class FloatingPanelSurfaceView: UIView {
             // for the bottom overflow like Auto Layout settings of UIVisualEffectView in Main.storyborad of Example/Maps.
             // Because the bottom of contentView must be fit to the bottom of a screen to work the `safeLayoutGuide` of a content VC.
 
-            contentView.layer.masksToBounds = true
-            contentView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-            contentView.layer.cornerRadius = panelCornerRadius
+            contentViewContainer.layer.masksToBounds = true
+            contentViewContainer.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+            contentViewContainer.layer.cornerRadius = panelCornerRadius
         } else {
             // Don't use `contentView.layer.mask` because of a UIVisualEffectView issue in iOS 10, https://forums.developer.apple.com/thread/50854
             // Instead, a user can mask the content view manually in an application.
