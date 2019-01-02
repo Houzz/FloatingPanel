@@ -140,6 +140,8 @@ class FloatingPanelLayoutAdapter {
         
         var additionalInset: CGFloat = 0.0
         
+        let adjustedBottomSafeAreaInset = safeAreaInsets.bottom > 0 ? safeAreaInsets.bottom / 2 : 0
+        
         if let containedHeight = layout.containedHeight {
             let topY = safeAreaInsets.top + layoutInset
             let bottomY = safeAreaInsets.bottom
@@ -147,7 +149,7 @@ class FloatingPanelLayoutAdapter {
         }
         
         // check if we need to update based on changed inset values
-        let currentFullInset = (isHigherThanTopPadding ? layoutInset : (additionalInset + layoutInset)) + safeAreaInsets.bottom + 8
+        let currentFullInset = (isHigherThanTopPadding ? layoutInset : (additionalInset + layoutInset)) + adjustedBottomSafeAreaInset + 8
         
         let shouldUpdate = (_previousFullInset == nil) || (_previousFullInset! != currentFullInset)
         _previousFullInset = currentFullInset
