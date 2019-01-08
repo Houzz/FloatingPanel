@@ -59,6 +59,9 @@ public class FloatingPanelSurfaceView: UIView {
     
     private var backgroundLayer: CAShapeLayer! { didSet { setNeedsLayout() } }
     
+    private var containedBottomBC: NSLayoutConstraint?
+    private var contentBottomBC: NSLayoutConstraint?
+    
     private struct Default {
         public static let grabberTopPadding: CGFloat = 6.0
     }
@@ -94,16 +97,20 @@ public class FloatingPanelSurfaceView: UIView {
         contentViewContainer.backgroundColor = color
         contentView.translatesAutoresizingMaskIntoConstraints = false
         contentViewContainer.translatesAutoresizingMaskIntoConstraints = false
+        
+        contentBottomBC = contentViewContainer.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0)
+        containedBottomBC = contentView.bottomAnchor.constraint(equalTo: contentViewContainer.bottomAnchor, constant: 0)
+         
         NSLayoutConstraint.activate([
             contentViewContainer.topAnchor.constraint(equalTo: topAnchor, constant: 0.0),
             contentViewContainer.leftAnchor.constraint(equalTo: leftAnchor, constant: 0.0),
             contentViewContainer.rightAnchor.constraint(equalTo: rightAnchor, constant: 0.0),
-            contentViewContainer.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 60.0),
+            contentBottomBC!,
             
             contentView.topAnchor.constraint(equalTo: contentViewContainer.topAnchor, constant: 0.0),
             contentView.leftAnchor.constraint(equalTo: contentViewContainer.leftAnchor, constant: 0.0),
             contentView.rightAnchor.constraint(equalTo: contentViewContainer.rightAnchor, constant: 0.0),
-            contentView.bottomAnchor.constraint(equalTo: contentViewContainer.bottomAnchor, constant: -60.0)
+            containedBottomBC!
             ])
 
         let grabberHandle = GrabberHandleView()
@@ -164,6 +171,13 @@ public class FloatingPanelSurfaceView: UIView {
 
     func set(bottomOverflow: CGFloat) {
         self.bottomOverflow = bottomOverflow
+        
+        containedBottomBC?.constant = -bottomOverflow
+        contentBottomBC?.constant = bottomOverflow
+        
+        setNeedsLayout()
+        layoutIfNeeded()
+        
         updateLayers()
         updateContentViewMask()
     }

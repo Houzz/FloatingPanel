@@ -122,12 +122,6 @@ class FloatingPanelLayoutAdapter {
     
     private var _previousFullInset: CGFloat?
     
-    private var isHigherThanTopPadding: Bool {
-        let topY = safeAreaInsets.top + (layout.insetFor(position: .full) ?? 0.0)
-        let bottomY = safeAreaInsets.bottom
-        return (surfaceView.superview!.bounds.height - topY) < (layout.containedHeight ?? 0.0) + bottomY
-    }
-    
     // TODO: refactor with simplified operations.
     private var fullInset: CGFloat {
         guard let layoutInset = layout.insetFor(position: .full) else {
@@ -138,31 +132,41 @@ class FloatingPanelLayoutAdapter {
             return 0
         }
         
-        var additionalInset: CGFloat = 0.0
+        guard let containedHeight = layout.containedHeight else {
+            return layoutInset
+        }
         
-        let adjustedBottomSafeAreaInset = safeAreaInsets.bottom > 0 ? safeAreaInsets.bottom / 2 : 0
+        // important to remeber that the top safe area inset is added later on,
+        // fullInset should not consider it when returning calculations.
         
-        if let containedHeight = layout.containedHeight {
-            let topY = safeAreaInsets.top + layoutInset
-            let bottomY = safeAreaInsets.bottom
-            additionalInset = surfaceView.superview!.bounds.height - topY - containedHeight - bottomY
+        let visibleHeight = surfaceView.superview!.bounds.height - safeAreaInsets.top - safeAreaInsets.bottom
+        let isContentLargerThanInset = visibleHeight - layoutInset < containedHeight
+        
+        // Possiblities:
+        //
+        // 1) either the contentHeight is larger than what we can display and so return the original inset.
+        // 2) content is smaller and we increase inset to support it visually.
+        
+        var finalInset: CGFloat = 0.0
+        
+        if isContentLargerThanInset {
+            finalInset = layoutInset
+        } else {
+            finalInset = visibleHeight - containedHeight
         }
         
         // check if we need to update based on changed inset values
-        let currentFullInset = (isHigherThanTopPadding ? layoutInset : (additionalInset + layoutInset)) + adjustedBottomSafeAreaInset + 8
-        
-        let shouldUpdate = (_previousFullInset == nil) || (_previousFullInset! != currentFullInset)
-        _previousFullInset = currentFullInset
+        let shouldUpdate = (_previousFullInset == nil) || (_previousFullInset! != finalInset)
+        _previousFullInset = finalInset
         
         if shouldUpdate {
-            updateConstraint(for: .full, with: currentFullInset)
+            updateConstraint(for: .full, with: finalInset)
         }
         
-        if let containedHeight = layout.containedHeight {
-            updateHeight(with: isHigherThanTopPadding ? layoutInset : UIScreen.main.bounds.height - (safeAreaInsets.top + containedHeight + safeAreaInsets.bottom + 8))
-        }
-        
-        return currentFullInset
+        // card height is dependent on whether the content fits into allowed space, add bottom inset since it affected by padding
+        updateHeight(with: visibleHeight - finalInset + safeAreaInsets.bottom)
+
+        return finalInset
     }
     
     private var _previousHalfInset: CGFloat?
@@ -286,14 +290,14 @@ class FloatingPanelLayoutAdapter {
     
     // The method is separated from prepareLayout(to:) for the rotation support
     // It must be called in FloatingPanelController.traitCollectionDidChange(_:)
-    func updateHeight(with fullInset: CGFloat? = nil) {
+    func updateHeight(with height: CGFloat? = nil) {
         defer {
             UIView.performWithoutAnimation {
                 surfaceView.superview?.layoutIfNeeded()
             }
         }
         
-        let height = (self.parent?.view.bounds.height ?? UIScreen.main.bounds.height) - (safeAreaInsets.top + (fullInset ?? self.fullInset))
+        let height = height ?? ((layout.containedHeight ?? 0) + safeAreaInsets.bottom)
 
         if let consts = self.heightConstraints {
             // dont know if internally guards against same value update
