@@ -212,7 +212,7 @@ public class FloatingPanelController: UIViewController, UIScrollViewDelegate, UI
 
         guard let parent = parent else { return }
 
-        floatingPanel.layoutAdapter.prepareLayout(toParent: parent)
+        floatingPanel.layoutAdapter.prepareLayout(toParent: parent, in: _containerView)
         floatingPanel.layoutAdapter.activateLayout(of: floatingPanel.state)
     }
 
