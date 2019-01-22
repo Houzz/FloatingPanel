@@ -74,9 +74,10 @@ public extension FloatingPanelBehavior {
     }
 
     func removalInteractionAnimator(_ fpc: FloatingPanelController, with velocity: CGVector) -> UIViewPropertyAnimator {
+        log.debug("velocity", velocity)
         let timing = UISpringTimingParameters(dampingRatio: 1.0,
-                                              frequencyResponse: 0.3,
-                                              initialVelocity: velocity)
+                                        frequencyResponse: 0.3,
+                                        initialVelocity: velocity)
         return UIViewPropertyAnimator(duration: 0, timingParameters: timing)
     }
 }
@@ -84,10 +85,13 @@ public extension FloatingPanelBehavior {
 class FloatingPanelDefaultBehavior: FloatingPanelBehavior {
     func interactionAnimator(_ fpc: FloatingPanelController, to targetPosition: FloatingPanelPosition, with velocity: CGVector) -> UIViewPropertyAnimator {
         let timing = timeingCurve(with: velocity)
-        return UIViewPropertyAnimator(duration: 0, timingParameters: timing)
+        let animator = UIViewPropertyAnimator(duration: 0, timingParameters: timing)
+        animator.isInterruptible = false
+        return animator
     }
 
     private func timeingCurve(with velocity: CGVector) -> UITimingCurveProvider {
+        log.debug("velocity", velocity)
         let damping = self.getDamping(with: velocity)
         return UISpringTimingParameters(dampingRatio: damping,
                                         frequencyResponse: 0.3,
