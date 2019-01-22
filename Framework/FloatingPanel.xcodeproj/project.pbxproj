@@ -14,7 +14,6 @@
 		94A953AB21F72209001E9235 /* FloatingPanelTransitioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A9539E21F72208001E9235 /* FloatingPanelTransitioning.swift */; };
 		94A953AC21F72209001E9235 /* UIExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A9539F21F72209001E9235 /* UIExtensions.swift */; };
 		94A953AD21F72209001E9235 /* FloatingPanelSurfaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A953A021F72209001E9235 /* FloatingPanelSurfaceView.swift */; };
-		94A953AE21F72209001E9235 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A953A121F72209001E9235 /* Logger.swift */; };
 		94A953AF21F72209001E9235 /* FloatingPanelLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A953A221F72209001E9235 /* FloatingPanelLayout.swift */; };
 		94A953B021F72209001E9235 /* FloatingPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A953A321F72209001E9235 /* FloatingPanelView.swift */; };
 		94A953B221F72209001E9235 /* GrabberHandleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A953A521F72209001E9235 /* GrabberHandleView.swift */; };
@@ -174,7 +173,6 @@
 				94A953A821F72209001E9235 /* FloatingPanelController.swift in Sources */,
 				94A953A921F72209001E9235 /* FloatingPanelBackdropView.swift in Sources */,
 				94A953AD21F72209001E9235 /* FloatingPanelSurfaceView.swift in Sources */,
-				94A953AE21F72209001E9235 /* Logger.swift in Sources */,
 				94A953AC21F72209001E9235 /* UIExtensions.swift in Sources */,
 				94A953AF21F72209001E9235 /* FloatingPanelLayout.swift in Sources */,
 				94A953A721F72209001E9235 /* FloatingPanel.swift in Sources */,

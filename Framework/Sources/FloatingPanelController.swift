@@ -226,7 +226,7 @@ public class FloatingPanelController: UIViewController, UIScrollViewDelegate, UI
             self.floatingPanel.interactionInProgress == false
         else { return }
 
-        log.debug("Update safeAreaInsets", safeAreaInsets)
+//        log.debug("Update safeAreaInsets", safeAreaInsets)
         
         floatingPanel.layoutAdapter.safeAreaInsets = safeAreaInsets
 
@@ -315,7 +315,7 @@ public class FloatingPanelController: UIViewController, UIScrollViewDelegate, UI
     ///     - animated: Pass true to animate the presentation; otherwise, pass false.
     public func addPanel(toParent parent: UIViewController, belowView: UIView? = nil, animated: Bool = false) {
         guard self.parent == nil else {
-            log.warning("Already added to a parent(\(parent))")
+//            log.warning("Already added to a parent(\(parent))")
             return
         }
         precondition((parent is UINavigationController) == false, "UINavigationController displays only one child view controller at a time.")

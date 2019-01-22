@@ -141,7 +141,7 @@ public class FloatingPanelSurfaceView: UIView {
     
     public override func layoutSubviews() {
         super.layoutSubviews()
-        log.debug("SurfaceView frame", frame)
+//        log.debug("SurfaceView frame", frame)
         
         updateLayers()
         
@@ -151,7 +151,7 @@ public class FloatingPanelSurfaceView: UIView {
     }
     
     private func updateLayers() {
-        log.debug("SurfaceView bounds", bounds)
+//        log.debug("SurfaceView bounds", bounds)
         
         if shadowHidden == false {
             layer.shadowColor = shadowColor.cgColor

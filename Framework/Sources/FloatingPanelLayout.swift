@@ -237,10 +237,10 @@ class FloatingPanelLayoutAdapter {
         }
         self.intrinsicHeight = max(intrinsicHeight, 0.0)
 
-        log.debug("Update intrinsic height =", intrinsicHeight,
-                  ", surface(height) =", surfaceView.frame.height,
-                  ", content(height) =", surfaceView.contentView?.frame.height ?? 0.0,
-                  ", content safe area(bottom) =", safeAreaBottom)
+//        log.debug("Update intrinsic height =", intrinsicHeight,
+//                  ", surface(height) =", surfaceView.frame.height,
+//                  ", content(height) =", surfaceView.contentView?.frame.height ?? 0.0,
+//                  ", content safe area(bottom) =", safeAreaBottom)
     }
 
     func prepareLayout(in vc: UIViewController) {
