@@ -152,7 +152,8 @@ class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewDelegate
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
                                   shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         guard gestureRecognizer == panGesture else { return false }
-        
+        return otherGestureRecognizer == scrollView?.panGestureRecognizer   // TODO: check if needed after update
+
         /* log.debug("shouldRecognizeSimultaneouslyWith", otherGestureRecognizer) */
         
         if viewcontroller.delegate?.floatingPanel(viewcontroller, shouldRecognizeSimultaneouslyWith: otherGestureRecognizer) ?? false {
@@ -166,13 +167,21 @@ class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewDelegate
     
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         guard gestureRecognizer == panGesture else { return false }
+        
+        if otherGestureRecognizer == scrollView?.panGestureRecognizer {
+            return false
+        } else {
+            return true
+        }
+
+        
         /* log.debug("shouldBeRequiredToFailBy", otherGestureRecognizer) */
         return false
     }
     
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         guard gestureRecognizer == panGesture else { return false }
-        
+        return false
         /* log.debug("shouldRequireFailureOf", otherGestureRecognizer) */
         
         // Should begin the pan gesture without waiting for the tracking scroll view's gestures.

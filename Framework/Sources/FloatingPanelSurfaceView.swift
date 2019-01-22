@@ -45,7 +45,7 @@ public class FloatingPanelSurfaceView: UIView {
     public var panelCornerRadius: CGFloat = 0.0 {
         didSet
         {
-            contentViewContainer.layer.cornerRadius = cornerRadius
+            contentViewContainer.layer.cornerRadius = panelCornerRadius
             setNeedsLayout()
         }
     }
