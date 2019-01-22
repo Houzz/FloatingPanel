@@ -42,7 +42,7 @@ public class FloatingPanelSurfaceView: UIView {
     ///
     /// `self.contentView` is masked with the top rounded corners automatically on iOS 11 and later.
     /// On iOS 10, they are not automatically masked because of a UIVisualEffectView issue. See https://forums.developer.apple.com/thread/50854
-    public var cornerRadius: CGFloat = 0.0 {
+    public var panelCornerRadius: CGFloat = 0.0 {
         didSet
         {
             contentViewContainer.layer.cornerRadius = cornerRadius
@@ -54,22 +54,22 @@ public class FloatingPanelSurfaceView: UIView {
     public var shadowHidden: Bool = false  { didSet { setNeedsLayout() } }
     
     /// The color of the surface shadow.
-    public var shadowColor: UIColor = .black  { didSet { setNeedsLayout() } }
+    public var panelShadowColor: UIColor = .black  { didSet { setNeedsLayout() } }
     
     /// The offset (in points) of the surface shadow.
-    public var shadowOffset: CGSize = CGSize(width: 0.0, height: 1.0)  { didSet { setNeedsLayout() } }
+    public var panelShadowOffset: CGSize = CGSize(width: 0.0, height: 1.0)  { didSet { setNeedsLayout() } }
     
     /// The opacity of the surface shadow.
-    public var shadowOpacity: Float = 0.2 { didSet { setNeedsLayout() } }
+    public var panelShadowOpacity: Float = 0.2 { didSet { setNeedsLayout() } }
     
     /// The blur radius (in points) used to render the surface shadow.
-    public var shadowRadius: CGFloat = 3  { didSet { setNeedsLayout() } }
+    public var panelShadowRadius: CGFloat = 3  { didSet { setNeedsLayout() } }
     
     /// The width of the surface border.
-    public var borderColor: UIColor?  { didSet { setNeedsLayout() } }
+    public var panelBorderColor: UIColor?  { didSet { setNeedsLayout() } }
     
     /// The color of the surface border.
-    public var borderWidth: CGFloat = 0.0  { didSet { setNeedsLayout() } }
+    public var panelBorderWidth: CGFloat = 0.0  { didSet { setNeedsLayout() } }
     
     private var containedBottomBC: NSLayoutConstraint?
     private var contentBottomBC: NSLayoutConstraint?
@@ -108,8 +108,10 @@ public class FloatingPanelSurfaceView: UIView {
         
         contentViewContainer.clipsToBounds = true
         contentViewContainer.layer.masksToBounds = true
-        contentViewContainer.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        contentViewContainer.layer.cornerRadius = cornerRadius
+        if #available(iOS 11.0, *) {
+            contentViewContainer.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        }
+        contentViewContainer.layer.cornerRadius = panelCornerRadius
         
         contentBottomBC = contentViewContainer.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0)
         containedBottomBC = contentView.bottomAnchor.constraint(equalTo: contentViewContainer.bottomAnchor, constant: 0)
@@ -154,10 +156,10 @@ public class FloatingPanelSurfaceView: UIView {
 //        log.debug("SurfaceView bounds", bounds)
         
         if shadowHidden == false {
-            layer.shadowColor = shadowColor.cgColor
-            layer.shadowOffset = shadowOffset
-            layer.shadowOpacity = shadowOpacity
-            layer.shadowRadius = shadowRadius
+            layer.shadowColor = panelShadowColor.cgColor
+            layer.shadowOffset = panelShadowOffset
+            layer.shadowOpacity = panelShadowOpacity
+            layer.shadowRadius = panelShadowRadius
         }
     }
     
