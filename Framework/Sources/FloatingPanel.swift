@@ -372,7 +372,7 @@ class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewDelegate
         var frame = initialFrame
         frame.origin.y = currentY
         surfaceView.frame = frame
-        backdropView.alpha = getBackdropAlpha(with: translation)
+//        backdropView.alpha = getBackdropAlpha(with: translation)
 
         viewcontroller.delegate?.floatingPanelDidMove(viewcontroller)
     }
