@@ -790,11 +790,11 @@ public class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewD
 
 
     // MARK: - UIScrollViewDelegate Intermediation
-    override func responds(to aSelector: Selector!) -> Bool {
+    override public func responds(to aSelector: Selector!) -> Bool {
         return super.responds(to: aSelector) || userScrollViewDelegate?.responds(to: aSelector) == true
     }
 
-    override func forwardingTarget(for aSelector: Selector!) -> Any? {
+    override public func forwardingTarget(for aSelector: Selector!) -> Any? {
         if userScrollViewDelegate?.responds(to: aSelector) == true {
             return userScrollViewDelegate
         } else {
