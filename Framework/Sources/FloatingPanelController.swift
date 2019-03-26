@@ -257,6 +257,9 @@ public class FloatingPanelController: UIViewController, UIScrollViewDelegate, UI
 
         let completionBlock = {
             self.floatingPanel.state = .half
+            if let collectionView = self.scrollView as? UICollectionView {
+                collectionView.collectionViewLayout.invalidateLayout()
+            }
         }
         
         if let coordinator = coordinator {
