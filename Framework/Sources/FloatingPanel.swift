@@ -152,7 +152,6 @@ public class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewD
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
                                   shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         guard gestureRecognizer == panGesture else { return false }
-        return otherGestureRecognizer == scrollView?.panGestureRecognizer   // TODO: check if needed after update
 
         /* log.debug("shouldRecognizeSimultaneouslyWith", otherGestureRecognizer) */
         
@@ -160,21 +159,23 @@ public class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewD
             return true
         }
         
-        // all gestures of the tracking scroll view should be recognized in parallel
-        // and handle them in self.handle(panGesture:)
-        return scrollView?.gestureRecognizers?.contains(otherGestureRecognizer) ?? false
+        switch otherGestureRecognizer {
+        case is UIPanGestureRecognizer,
+             is UISwipeGestureRecognizer,
+             is UIRotationGestureRecognizer,
+             is UIScreenEdgePanGestureRecognizer,
+             is UIPinchGestureRecognizer:
+            // all gestures of the tracking scroll view should be recognized in parallel
+            // and handle them in self.handle(panGesture:)
+            return scrollView?.gestureRecognizers?.contains(otherGestureRecognizer) ?? false
+        default:
+            // Should always recognize tap/long press gestures in parallel
+            return true
+        }
     }
     
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         guard gestureRecognizer == panGesture else { return false }
-        
-        if otherGestureRecognizer == scrollView?.panGestureRecognizer {
-            return false
-        } else {
-            return true
-        }
-
-        
         /* log.debug("shouldBeRequiredToFailBy", otherGestureRecognizer) */
         return false
     }
