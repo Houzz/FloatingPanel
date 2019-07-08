@@ -32,7 +32,7 @@ public class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewD
     }
     weak var userScrollViewDelegate: UIScrollViewDelegate?
 
-    internal(set) var state: FloatingPanelPosition = .hidden {
+    var state: FloatingPanelPosition = .hidden {
         didSet { viewcontroller.delegate?.floatingPanelDidChangePosition(viewcontroller) }
     }
 
@@ -183,41 +183,6 @@ public class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewD
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         guard gestureRecognizer == panGesture else { return false }
         return false
-        /* log.debug("shouldRequireFailureOf", otherGestureRecognizer) */
-        
-        // Should begin the pan gesture without waiting for the tracking scroll view's gestures.
-        // `scrollView.gestureRecognizers` can contains the following gestures
-        // * UIScrollViewDelayedTouchesBeganGestureRecognizer
-        // * UIScrollViewPanGestureRecognizer (scrollView.panGestureRecognizer)
-        // * _UIDragAutoScrollGestureRecognizer
-        // * _UISwipeActionPanGestureRecognizer
-        // * UISwipeDismissalGestureRecognizer
-        if let scrollView = scrollView {
-            // On short contents scroll, `_UISwipeActionPanGestureRecognizer` blocks
-            // the panel's pan gesture if not returns false
-            if let scrollGestureRecognizers = scrollView.gestureRecognizers,
-                scrollGestureRecognizers.contains(otherGestureRecognizer) {
-                return false
-            }
-        }
-        
-        if viewcontroller.delegate?.floatingPanel(viewcontroller, shouldRecognizeSimultaneouslyWith: otherGestureRecognizer) ?? false {
-            return false
-        }
-        
-        
-        switch otherGestureRecognizer {
-        case is UIPanGestureRecognizer,
-             is UISwipeGestureRecognizer,
-             is UIRotationGestureRecognizer,
-             is UIScreenEdgePanGestureRecognizer,
-             is UIPinchGestureRecognizer:
-            // Do not begin the pan gesture until these gestures fail
-            return true
-        default:
-            // Should begin the pan gesture witout waiting tap/long press gestures fail
-            return false
-        }
     }
     
     func resetContentOffset() {
@@ -406,12 +371,8 @@ public class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewD
             if shouldStartRemovalAnimation(with: translation, velocityVector: velocityVector) {
 
                 viewcontroller.delegate?.floatingPanelDidEndDraggingToRemove(viewcontroller, withVelocity: velocity)
-                self.startRemovalAnimation(with: velocityVector) { [weak self] in
-                    //guard let `self` = self else { return }
-                    //self.viewcontroller.dismiss(animated: false, completion: { [weak self] in
-                    //    guard let `self` = self else { return }
-                    //    self.viewcontroller.delegate?.floatingPanelDidEndRemove(self.viewcontroller)
-                    //})
+                self.startRemovalAnimation(with: velocityVector) {
+                    
                 }
                 return
             }
@@ -803,14 +764,14 @@ public class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewD
         }
     }
 
-    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+    public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         if state != .full {
             initialScrollOffset = scrollView.contentOffset
         }
         userScrollViewDelegate?.scrollViewDidEndScrollingAnimation?(scrollView)
     }
 
-    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+    public func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         if stopScrollDeceleration {
             targetContentOffset.pointee = scrollView.contentOffset
             stopScrollDeceleration = false
