@@ -276,6 +276,8 @@ public class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewD
                 panningEnd(with: translation, velocity: velocity)
             case .possible:
                 break
+            @unknown default:
+                break
             }
         default:
             return
