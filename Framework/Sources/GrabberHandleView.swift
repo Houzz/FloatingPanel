@@ -17,7 +17,7 @@ public class GrabberHandleView: UIView {
         render()
     }
 
-    init() {
+    public init() {
         let size = CGSize(width: Default.width,
                           height: Default.height)
         super.init(frame: CGRect(origin: .zero, size: size))
