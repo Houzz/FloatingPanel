@@ -24,6 +24,13 @@ public class GrabberHandleView: UIView {
         self.backgroundColor = Default.barColor
         render()
     }
+    
+    
+    public override init(frame: CGRect) {
+        super.init(frame: CGRect(x: 0, y: 0, width: Default.width, height: Default.height))
+        self.backgroundColor = Default.barColor
+        render()
+    }
 
     private func render() {
         self.layer.masksToBounds = true
