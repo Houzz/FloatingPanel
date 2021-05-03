@@ -229,11 +229,9 @@ class FloatingPanelLayoutAdapter {
         let fittingSize = UIView.layoutFittingCompressedSize
         var intrinsicHeight = surfaceView.contentView?.systemLayoutSizeFitting(fittingSize).height ?? 0.0
         var safeAreaBottom: CGFloat = 0.0
-        if #available(iOS 11.0, *) {
-            safeAreaBottom = surfaceView.contentView?.safeAreaInsets.bottom ?? 0.0
-            if safeAreaBottom > 0 {
-                intrinsicHeight -= safeAreaInsets.bottom
-            }
+        safeAreaBottom = surfaceView.contentView?.safeAreaInsets.bottom ?? 0.0
+        if safeAreaBottom > 0 {
+            intrinsicHeight -= safeAreaInsets.bottom
         }
         self.intrinsicHeight = max(intrinsicHeight, 0.0)
 

@@ -174,15 +174,6 @@ open class FloatingPanelController: UIViewController, UIScrollViewDelegate, UIGe
         self.view = view as UIView
     }
 
-    public override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        if #available(iOS 11.0, *) {}
-        else {
-            // Because {top,bottom}LayoutGuide is managed as a view
-            self.update(safeAreaInsets: layoutInsets)
-        }
-    }
-
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         
@@ -281,21 +272,16 @@ open class FloatingPanelController: UIViewController, UIScrollViewDelegate, UIGe
         // Must apply the current layout here
         reloadLayout(for: traitCollection)
         setupLayout()
-
-        if #available(iOS 11.0, *) {
-            // Must track the safeAreaInsets of `self.view` to update the layout.
-            // There are 2 reasons.
-            // 1. This or the parent VC doesn't call viewSafeAreaInsetsDidChange() on the bottom
-            // inset's update expectedly.
-            // 2. The safe area top inset can be variable on the large title navigation bar(iOS11+).
-            // That's why it needs the observation to keep `adjustedContentInsets` correct.
-            safeAreaInsetsObservation = self.observe(\.view.safeAreaInsets) { [weak self] (vc, chaneg) in
-                guard let `self` = self else { return }
-                self.update(safeAreaInsets: vc.layoutInsets)
-            }
-        } else {
-            // KVOs for topLayoutGuide & bottomLayoutGuide are not effective.
-            // Instead, update(safeAreaInsets:) is called at `viewDidLayoutSubviews()`
+        
+        // Must track the safeAreaInsets of `self.view` to update the layout.
+        // There are 2 reasons.
+        // 1. This or the parent VC doesn't call viewSafeAreaInsetsDidChange() on the bottom
+        // inset's update expectedly.
+        // 2. The safe area top inset can be variable on the large title navigation bar(iOS11+).
+        // That's why it needs the observation to keep `adjustedContentInsets` correct.
+        safeAreaInsetsObservation = self.observe(\.view.safeAreaInsets) { [weak self] (vc, chaneg) in
+            guard let `self` = self else { return }
+            self.update(safeAreaInsets: vc.layoutInsets)
         }
 
         move(to: floatingPanel.layoutAdapter.layout.initialPosition,
@@ -437,13 +423,7 @@ open class FloatingPanelController: UIViewController, UIScrollViewDelegate, UIGe
         
         switch contentInsetAdjustmentBehavior {
         case .always:
-            if #available(iOS 11.0, *) {
-                scrollView.contentInsetAdjustmentBehavior = .never
-            } else {
-                children.forEach { (vc) in
-                    vc.automaticallyAdjustsScrollViewInsets = false
-                }
-            }
+            scrollView.contentInsetAdjustmentBehavior = .never
         default:
             break
         }

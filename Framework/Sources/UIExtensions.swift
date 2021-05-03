@@ -22,23 +22,11 @@ class CustomLayoutGuide: LayoutGuideProvider {
 
 extension UIViewController {
     var layoutInsets: UIEdgeInsets {
-        if #available(iOS 11.0, *) {
-            return view.safeAreaInsets
-        } else {
-            return UIEdgeInsets(top: topLayoutGuide.length,
-                                left: 0.0,
-                                bottom: bottomLayoutGuide.length,
-                                right: 0.0)
-        }
+        view.safeAreaInsets
     }
 
     var layoutGuide: LayoutGuideProvider {
-        if #available(iOS 11.0, *) {
-            return view!.safeAreaLayoutGuide
-        } else {
-            return CustomLayoutGuide(topAnchor: topLayoutGuide.bottomAnchor,
-                                     bottomAnchor: bottomLayoutGuide.topAnchor)
-        }
+        view!.safeAreaLayoutGuide
     }
 }
 
@@ -54,11 +42,7 @@ extension UILayoutGuide: SideLayoutGuideProvider {}
 // is for iOS10 compat.
 extension UIView {
     var sideLayoutGuide: SideLayoutGuideProvider {
-        if #available(iOS 11.0, *) {
-            return safeAreaLayoutGuide
-        } else {
-            return self
-        }
+        safeAreaLayoutGuide
     }
 }
 

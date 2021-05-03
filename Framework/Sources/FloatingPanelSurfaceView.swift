@@ -108,9 +108,7 @@ public class FloatingPanelSurfaceView: UIView {
         
         contentViewContainer.clipsToBounds = true
         contentViewContainer.layer.masksToBounds = true
-        if #available(iOS 11.0, *) {
-            contentViewContainer.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        }
+        contentViewContainer.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         contentViewContainer.layer.cornerRadius = panelCornerRadius
         
         contentBottomBC = contentViewContainer.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0)
