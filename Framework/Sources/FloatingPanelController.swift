@@ -5,7 +5,7 @@
 
 import UIKit
 
-public protocol FloatingPanelControllerDelegate: class {
+public protocol FloatingPanelControllerDelegate: AnyObject {
     // if it returns nil, FloatingPanelController uses the default layout
     func floatingPanel(_ vc: FloatingPanelController, layoutFor newCollection: UITraitCollection) -> FloatingPanelLayout?
 
