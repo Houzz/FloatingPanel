@@ -272,7 +272,9 @@ open class FloatingPanelController: UIViewController, UIScrollViewDelegate, UIGe
         // Must apply the current layout here
         reloadLayout(for: traitCollection)
         setupLayout()
-        
+
+        update(safeAreaInsets: layoutInsets)
+
         // Must track the safeAreaInsets of `self.view` to update the layout.
         // There are 2 reasons.
         // 1. This or the parent VC doesn't call viewSafeAreaInsetsDidChange() on the bottom
