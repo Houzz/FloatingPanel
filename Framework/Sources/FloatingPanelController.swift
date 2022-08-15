@@ -122,6 +122,12 @@ open class FloatingPanelController: UIViewController, UIScrollViewDelegate, UIGe
         set { floatingPanel.isRemovalInteractionEnabled = newValue }
         get { return floatingPanel.isRemovalInteractionEnabled }
     }
+    
+    /// A Boolean value that determines whether ingores scrollView's last contentOffSetY when scrolling
+    public var ignoreContentOffsetY: Bool {
+        set { floatingPanel.ignoreContentOffsetY = newValue }
+        get { return floatingPanel.ignoreContentOffsetY }
+    }
 
     /// The view controller responsible for the content portion of the floating panel.
     public var contentViewController: UIViewController? {

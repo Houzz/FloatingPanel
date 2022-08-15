@@ -43,6 +43,8 @@ public class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewD
 
     let panGesture: FloatingPanelPanGestureRecognizer
     var isRemovalInteractionEnabled: Bool = false
+    
+    var ignoreContentOffsetY: Bool = false
 
     private var animator: UIViewPropertyAnimator?
     private var initialFrame: CGRect = .zero
@@ -221,6 +223,7 @@ public class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewD
                         scrollView.contentOffset.y = initialScrollOffset.y
                     } else {
                         // Prevent over scrolling in moving from full.
+                        guard !ignoreContentOffsetY else { return }
                         scrollView.contentOffset.y = scrollView.contentOffsetZero.y
                     }
                 case .half, .tip:
