@@ -63,6 +63,10 @@ public protocol FloatingPanelLayout: AnyObject {
     ///
     /// Default is 0.3 at full position, otherwise 0.0.
     func backdropAlphaFor(position: FloatingPanelPosition) -> CGFloat
+    
+    /// the content inset that allows to append more inset to scrollView. Default value is `UIEdgeInsets.zero`
+    /// If extensiveContentInsets isn't been overridden, the scorllView's contentInset will be `UIEdgeInsets(top: 0, left: 0, bottom: safeAreaInsets.bottom, right: 0)`.
+    var extensiveContentInsets: UIEdgeInsets { get }
 }
 
 public extension FloatingPanelLayout {
@@ -83,6 +87,8 @@ public extension FloatingPanelLayout {
     func backdropAlphaFor(position: FloatingPanelPosition) -> CGFloat {
         return position == .full ? 0.3 : 0.0
     }
+    
+    var extensiveContentInsets: UIEdgeInsets { .zero }
 }
 
 public class FloatingPanelDefaultLayout: FloatingPanelLayout {
@@ -198,10 +204,12 @@ class FloatingPanelLayoutAdapter {
     var bottomMaxY: CGFloat { return safeAreaBottomY }
 
     var adjustedContentInsets: UIEdgeInsets {
-        return UIEdgeInsets(top: 0.0,
-                            left: 0.0,
-                            bottom: safeAreaInsets.bottom,
-                            right: 0.0)
+        UIEdgeInsets(
+            top: layout.extensiveContentInsets.top,
+            left: layout.extensiveContentInsets.left,
+            bottom: safeAreaInsets.bottom + layout.extensiveContentInsets.bottom,
+            right: layout.extensiveContentInsets.right
+        )
     }
 
     func positionY(for pos: FloatingPanelPosition) -> CGFloat {
