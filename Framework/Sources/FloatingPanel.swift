@@ -765,6 +765,10 @@ public class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewD
             return super.forwardingTarget(for: aSelector)
         }
     }
+    
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        viewcontroller.delegate?.floatingPanel(viewcontroller, scrollViewDidScroll: scrollView)
+    }
 
     public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         if state != .full {

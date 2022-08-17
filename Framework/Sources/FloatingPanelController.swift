@@ -29,6 +29,8 @@ public protocol FloatingPanelControllerDelegate: AnyObject {
     func floatingPanelDidEndRemove(_ vc: FloatingPanelController)
 
     func floatingPanel(_ vc: FloatingPanelController, shouldRecognizeSimultaneouslyWith gestureRecognizer: UIGestureRecognizer) -> Bool
+    
+    func floatingPanel(_ vc: FloatingPanelController, scrollViewDidScroll scrollView: UIScrollView)
 }
 
 public extension FloatingPanelControllerDelegate {
@@ -49,6 +51,8 @@ public extension FloatingPanelControllerDelegate {
     func floatingPanelDidEndRemove(_ vc: FloatingPanelController) {}
 
     func floatingPanel(_ vc: FloatingPanelController, shouldRecognizeSimultaneouslyWith gestureRecognizer: UIGestureRecognizer) -> Bool { return false }
+    
+    func floatingPanel(_ vc: FloatingPanelController, scrollViewDidScroll scrollView: UIScrollView) {}
 }
 
 

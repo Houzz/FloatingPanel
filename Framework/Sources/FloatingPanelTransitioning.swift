@@ -34,6 +34,7 @@ class FloatingPanelPresentationController: UIPresentationController {
     override func dismissalTransitionDidEnd(_ completed: Bool) {
         if let fpc = presentedViewController as? FloatingPanelController {
             // For non-animated dismissal
+            fpc.delegate?.floatingPanelDidEndRemove(fpc)
             if fpc.position != .hidden {
                 fpc.hide(animated: false, completion: nil)
             }
