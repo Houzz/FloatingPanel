@@ -235,7 +235,8 @@ public class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewD
                     // Fix the scroll offset in moving the panel from half and tip.
                     scrollView.contentOffset.y = initialScrollOffset.y
                 case .hidden:
-                    fatalError("A floating panel hidden must not be used by a user")
+                    //fatalError("A floating panel hidden must not be used by a user")
+                    return
                 }
 
                 // Always hide a scroll indicator at the non-top.
