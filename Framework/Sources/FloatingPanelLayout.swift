@@ -294,7 +294,7 @@ class FloatingPanelLayoutAdapter {
     // The method is separated from prepareLayout(to:) for the rotation support
     // It must be called in FloatingPanelController.traitCollectionDidChange(_:)
     func updateHeight() {
-        guard let vc = vc else { return }
+        guard let vc else { return }
 
         NSLayoutConstraint.deactivate(heightConstraints)
 

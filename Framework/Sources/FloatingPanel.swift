@@ -18,12 +18,12 @@ public class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewD
 
     weak var scrollView: UIScrollView? {
         willSet {
-            guard let scrollView = scrollView else { return }
+            guard let scrollView else { return }
             scrollView.panGestureRecognizer.removeTarget(self, action: #selector(handle(panGesture:)))
             unlockScrollView()
         }
         didSet {
-            guard let scrollView = scrollView else { return }
+            guard let scrollView else { return }
             scrollView.panGestureRecognizer.addTarget(self, action: #selector(handle(panGesture:)))
             scrollBouncable = scrollView.bounces
             scrollIndictorVisible = scrollView.showsVerticalScrollIndicator
@@ -203,7 +203,7 @@ public class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewD
 
         switch panGesture {
         case scrollView?.panGestureRecognizer:
-            guard let scrollView = scrollView else { return }
+            guard let scrollView else { return }
 
 //            log.debug("SrollPanGesture ScrollView.contentOffset >>>", scrollView.contentOffset.y, scrollView.contentSize, scrollView.bounds.size)
 
@@ -286,7 +286,7 @@ public class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewD
 
     private func shouldScrollViewHandleTouch(_ scrollView: UIScrollView?, point: CGPoint, velocity: CGPoint) -> Bool {
         // When no scrollView, nothing to handle.
-        guard let scrollView = scrollView else { return false }
+        guard let scrollView else { return false }
 
         // For _UISwipeActionPanGestureRecognizer
         if let scrollGestureRecognizers = scrollView.gestureRecognizers {
@@ -418,7 +418,7 @@ public class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewD
         /* Don't lock a scroll view to show a scroll indicator after hitting the top */
 //        log.debug("startInteraction")
         initialFrame = surfaceView.frame
-        if let scrollView = scrollView {
+        if let scrollView {
             initialScrollOffset = scrollView.contentOffset
         }
         transOffsetY = translation.y
@@ -477,7 +477,7 @@ public class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewD
         let bottomY = layoutAdapter.bottomY
         let bottomBuffer = layoutAdapter.layout.bottomInteractionBuffer
 
-        if let scrollView = scrollView, scrollView.panGestureRecognizer.state == .changed {
+        if let scrollView, scrollView.panGestureRecognizer.state == .changed {
             let preY = surfaceView.frame.origin.y
             if preY > 0 && preY > y {
                 return max(topY, min(bottomY, y))
@@ -737,7 +737,7 @@ public class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewD
     // MARK: - ScrollView handling
 
     private func lockScrollView() {
-        guard let scrollView = scrollView else { return }
+        guard let scrollView else { return }
 
         scrollView.isDirectionalLockEnabled = true
         scrollView.bounces = false
@@ -745,7 +745,7 @@ public class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewD
     }
 
     private func unlockScrollView() {
-        guard let scrollView = scrollView else { return }
+        guard let scrollView else { return }
 
         scrollView.isDirectionalLockEnabled = false
         scrollView.bounces = scrollBouncable

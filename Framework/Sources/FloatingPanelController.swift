@@ -263,7 +263,7 @@ open class FloatingPanelController: UIViewController, UIScrollViewDelegate, UIGe
             }
         }
         
-        if let coordinator = coordinator {
+        if let coordinator {
             coordinator.animate(alongsideTransition: { (context) in
                 animationBlock()
             }) { (context) in
@@ -325,7 +325,7 @@ open class FloatingPanelController: UIViewController, UIScrollViewDelegate, UIGe
         precondition((parent is UITableViewController) == false, "UITableViewController should not be the parent because the view is a table view so that a floating panel doens't work well")
         precondition((parent is UICollectionViewController) == false, "UICollectionViewController should not be the parent because the view is a collection view so that a floating panel doens't work well")
 
-        if let belowView = belowView {
+        if let belowView {
             parent.view.insertSubview(self.view, belowSubview: belowView)
         } else {
             parent.view.addSubview(self.view)
@@ -479,7 +479,7 @@ extension FloatingPanelController {
         }
         let originalMethod = class_getInstanceMethod(aClass, #selector(dismiss(animated:completion:)))
         let swizzledMethod = class_getInstanceMethod(aClass, #selector(fp_dismiss(animated:completion:)))
-        if let originalMethod = originalMethod, let swizzledMethod = swizzledMethod {
+        if let originalMethod, let swizzledMethod {
             // switch implementation..
             method_exchangeImplementations(originalMethod, swizzledMethod)
         }
