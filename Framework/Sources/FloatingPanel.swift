@@ -205,8 +205,6 @@ public class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewD
         case scrollView?.panGestureRecognizer:
             guard let scrollView else { return }
 
-//            log.debug("SrollPanGesture ScrollView.contentOffset >>>", scrollView.contentOffset.y, scrollView.contentSize, scrollView.bounds.size)
-
             // Prevent scoll slip by the top bounce when the scroll view's height is
             // less than the content's height
             if scrollView.isDecelerating == false, scrollView.contentSize.height > scrollView.bounds.height {
@@ -252,8 +250,6 @@ public class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewD
         case panGesture:
             let translation = panGesture.translation(in: panGesture.view!.superview)
             let location = panGesture.location(in: panGesture.view)
-
-//            log.debug(panGesture.state, ">>>", "translation: \(translation.y), velocity: \(velocity.y)")
 
             if shouldScrollViewHandleTouch(scrollView, point: location, velocity: velocity) {
                 return
@@ -308,8 +304,6 @@ public class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewD
         else {
             return false
         }
-
-//        log.debug("ScrollView.contentOffset >>>", scrollView.contentOffset.y)
 
         let offset = scrollView.contentOffset.y - scrollView.contentOffsetZero.y
         if  abs(offset) > offsetThreshold {
