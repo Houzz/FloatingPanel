@@ -204,7 +204,7 @@ class SearchPanelViewController: UIViewController, UITableViewDataSource, UITabl
     }
 }
 
-public class SearchPanelLandscapeLayout: FloatingPanelLayout {
+class SearchPanelLandscapeLayout: FloatingPanelLayout {
     public var initialPosition: FloatingPanelPosition {
         return .tip
     }

@@ -91,7 +91,7 @@ public extension FloatingPanelLayout {
     var extensiveContentInsets: UIEdgeInsets { .zero }
 }
 
-public class FloatingPanelDefaultLayout: FloatingPanelLayout {
+class FloatingPanelDefaultLayout: FloatingPanelLayout {
     public var initialPosition: FloatingPanelPosition {
         return .half
     }
@@ -106,7 +106,7 @@ public class FloatingPanelDefaultLayout: FloatingPanelLayout {
     }
 }
 
-public class FloatingPanelDefaultLandscapeLayout: FloatingPanelLayout {
+class FloatingPanelDefaultLandscapeLayout: FloatingPanelLayout {
     public var initialPosition: FloatingPanelPosition {
         return .tip
     }
