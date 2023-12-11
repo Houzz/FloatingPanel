@@ -158,6 +158,7 @@ public class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewD
             return true
         }
         
+#if !os(xrOS)
         switch otherGestureRecognizer {
         case is UIPanGestureRecognizer,
              is UISwipeGestureRecognizer,
@@ -171,6 +172,20 @@ public class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewD
             // Should always recognize tap/long press gestures in parallel
             return true
         }
+#else
+        switch otherGestureRecognizer {
+        case is UIPanGestureRecognizer,
+             is UISwipeGestureRecognizer,
+             is UIRotationGestureRecognizer,
+             is UIPinchGestureRecognizer:
+            // all gestures of the tracking scroll view should be recognized in parallel
+            // and handle them in self.handle(panGesture:)
+            return scrollView?.gestureRecognizers?.contains(otherGestureRecognizer) ?? false
+        default:
+            // Should always recognize tap/long press gestures in parallel
+            return true
+        }
+#endif
     }
     
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
