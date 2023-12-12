@@ -158,7 +158,7 @@ public class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewD
             return true
         }
         
-#if !os(xrOS)
+#if !os(visionOS)
         switch otherGestureRecognizer {
         case is UIPanGestureRecognizer,
              is UISwipeGestureRecognizer,
