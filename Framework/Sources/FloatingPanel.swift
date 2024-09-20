@@ -7,7 +7,7 @@ import UIKit
 ///
 /// FloatingPanel presentation model
 ///
-public class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewDelegate {
+@MainActor public class FloatingPanel: NSObject, UIGestureRecognizerDelegate, UIScrollViewDelegate {
     // MUST be a weak reference to prevent UI freeze on the presentaion modally
     weak var viewcontroller: FloatingPanelController!
 
