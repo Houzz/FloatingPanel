@@ -27,7 +27,7 @@ public extension FloatingPanelIntrinsicLayout {
     }
 }
 
-public protocol FloatingPanelLayout: AnyObject {
+@MainActor public protocol FloatingPanelLayout: AnyObject {
     /// Returns the initial position of a floating panel.
     var initialPosition: FloatingPanelPosition { get }
 
@@ -124,7 +124,7 @@ class FloatingPanelDefaultLandscapeLayout: FloatingPanelLayout {
 }
 
 
-class FloatingPanelLayoutAdapter {
+@MainActor class FloatingPanelLayoutAdapter {
     weak var vc: UIViewController!
     private weak var surfaceView: FloatingPanelSurfaceView!
     private weak var backdropView: FloatingPanelBackdropView!

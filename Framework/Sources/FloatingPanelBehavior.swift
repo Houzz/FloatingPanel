@@ -5,7 +5,7 @@
 
 import UIKit
 
-public protocol FloatingPanelBehavior {
+@MainActor public protocol FloatingPanelBehavior {
     /// Returns the progress to redirect to the previous position
     ///
     /// The progress is represented by a floating-point value between 0.0 and 1.0, inclusive, where 1.0 indicates the floating panel is impossible to move to the next posiiton. The default value is 0.5. Values less than 0.0 and greater than 1.0 are pinned to those limits.
